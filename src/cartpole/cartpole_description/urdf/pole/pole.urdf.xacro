@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find cartpole_description)/urdf/pole/pole.gazebo.xacro" />
+  <xacro:include filename="$(find cartpole_description)/urdf/pole/pole.transmission.xacro" />
+  <xacro:macro name="pole" params="prefix parent *joint_origin *joint_axis">
+    <joint name="${prefix}_joint" type="revolute">
+      <xacro:insert_block name="joint_origin" />
+      <xacro:insert_block name="joint_axis" />
+      <parent link="${parent}" />
+      <child link="pole" />
+      <limit lower="-1.57" upper="1.57" effort="10" velocity="10" />
+    </joint>
+
+    <link name="pole">
+      <visual>
+        <geometry>
+          <box size="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="yellow">
+          <color rgba="1 1 0 1"/>
+        </material>
+      </visual>
+
+      <collision>
+        <geometry>
+          <box size="0 0 0"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </collision>
+
+      <inertial>
+        <origin xyz="0.0 0.0 0.0" />
+        <mass value="0"/>
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+      </inertial>
+    </link>
+
+    <link name="pole1">
+      <visual>
+        <geometry>
+          <box size="0.015 0.02 0.2"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="yellow">
+          <color rgba="1 1 0 1"/>
+        </material>
+      </visual>
+
+      <collision>
+        <geometry>
+          <box size="0.015 0.02 0.2"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="0.003"/>
+        <inertia ixx="0.0013541667" ixy="0" ixz="0" iyy="0.0013541667" iyz="0" izz="0.0025"/>
+      </inertial>
+    </link>
+
+    <joint name="pole1_joint" type="fixed">
+      <origin xyz="0 0 0.1" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <parent link="pole" />
+      <child link="pole1" />
+      <limit lower="-1.57" upper="1.57" effort="10" velocity="10" />
+    </joint>
+
+  </xacro:macro>
+</robot>

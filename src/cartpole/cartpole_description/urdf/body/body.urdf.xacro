@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find cartpole_description)/urdf/body/body.gazebo.xacro" />
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+  <xacro:property name="velocity_scale_factor" value="1.0"/>
+  <xacro:macro name="base" params="parent *joint_origin">
+    <joint name="base_joint" type="fixed">
+      <xacro:insert_block name="joint_origin"/>
+      <parent link="${parent}"/>
+      <child link="base_link"/>
+    </joint>
+
+    <link name="base_link">
+      <visual>
+        <geometry>
+          <box size="0.18 0.09 0.02"/>
+        </geometry>
+        <material name="gray">
+          <color rgba="1 1 1 1"/>
+        </material>
+      </visual>
+
+      <collision>
+        <geometry>
+          <box size="0.18 0.09 0.02"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 0"/>
+        <mass value="0.15"/>
+        <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+</robot>

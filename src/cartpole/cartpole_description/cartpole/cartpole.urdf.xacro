@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot name="cartpole" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find cartpole_description)/urdf/body/body.urdf.xacro"/>
+  <xacro:include filename="$(find cartpole_description)/urdf/wheel/wheel.urdf.xacro"/>
+  <xacro:include filename="$(find cartpole_description)/urdf/pole/pole.urdf.xacro"/>
+  <link name="base_footprint"/>
+
+  <xacro:base parent="base_footprint">
+    <origin xyz="0 0 0"/>
+  </xacro:base>
+
+  <xacro:wheel prefix="right1" parent="base_link">
+    <origin xyz="0.09 -0.0485 0.0" rpy="1.57 0 0" />
+    <axis xyz="0 0 -1" />
+  </xacro:wheel>
+
+  <xacro:wheel prefix="right2" parent="base_link">
+    <origin xyz="-0.09 -0.0485 0.0" rpy="1.57 0 0" />
+    <axis xyz="0 0 -1" />
+  </xacro:wheel>
+
+  <xacro:wheel prefix="left1" parent="base_link">
+    <origin xyz="0.09 0.0485 0.0" rpy="-1.57 0 0" />
+    <axis xyz="0 0 1" />
+  </xacro:wheel>
+
+  <xacro:wheel prefix="left2" parent="base_link">
+    <origin xyz="-0.09 0.0485 0.0" rpy="-1.57 0 0" />
+    <axis xyz="0 0 1" />
+  </xacro:wheel>
+
+  <xacro:pole prefix="pole" parent="base_link">
+    <origin xyz="0.0 0.0 0.0175" rpy="0 0 0" />
+    <axis xyz="0 1 0" />
+  </xacro:pole>
+
+  <!-- ===========  Transmission ============ -->
+  <xacro:wheel_trans prefix="right1" interface="hardware_interface/VelocityJointInterface" />
+  <xacro:wheel_trans prefix="left1" interface="hardware_interface/VelocityJointInterface" />
+  <xacro:pole_trans prefix="pole" interface="hardware_interface/EffortJointInterface" />
+  <!-- =============== Gazebo =============== -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/cartpole</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
+  <xacro:base_gazebo/>
+  <xacro:wheel_gazebo prefix="right1" />
+  <xacro:wheel_gazebo prefix="left1" />
+  <xacro:wheel_gazebo prefix="right2" />
+  <xacro:wheel_gazebo prefix="left2" />
+  <xacro:pole_gazebo prefix="pole" />
+</robot>
